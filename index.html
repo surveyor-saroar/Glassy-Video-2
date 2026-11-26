@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="bn">
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -7,591 +7,361 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
   <style>
     :root {
-      --glass-bg: rgba(18, 22, 34, 0.42);
-      --glass-border: rgba(255, 255, 255, 0.22);
-      --glass-highlight: rgba(255, 255, 255, 0.34);
-      --pill-active: rgba(255, 255, 255, 0.16);
-      --pill-hover: rgba(255, 255, 255, 0.09);
-      --bg-layer-1: transparent;
-      --bg-layer-2: transparent;
-      --bg-base: transparent;
-      --bg-custom-image: none;
+      --mirror-tint: rgba(255, 255, 255, 0.025);
+      --mirror-border: rgba(255, 255, 255, 0.28);
+      --mirror-sheen-top: rgba(255, 255, 255, 0.22);
+      --mirror-sheen-mid: rgba(255, 255, 255, 0.04);
+      --mirror-pill-hover: rgba(255, 255, 255, 0.08);
+      --mirror-pill-active: rgba(255, 255, 255, 0.14);
+      --text-float-shadow: 0 1px 10px rgba(0, 0, 0, 0.55), 0 0 1px rgba(255, 255, 255, 0.22);
     }
 
     * {
       box-sizing: border-box;
     }
 
+    html,
     body {
       margin: 0;
+      padding: 0;
       min-height: 100vh;
-      font-family: 'Hind Siliguri', 'Inter', sans-serif;
-      color: #f8fafc;
-      overflow-x: hidden;
-      background-color: transparent;
-    }
-
-    .font-en {
-      font-family: 'Inter', 'Hind Siliguri', sans-serif;
-    }
-
-    /* Clean/Transparent or User-Supplied Background Layer */
-    .custom-bg-stage {
-      background-color: transparent;
-      background-image: var(--bg-custom-image), var(--bg-layer-1), var(--bg-layer-2), var(--bg-base);
-      background-size: cover, cover, cover, cover;
-      background-position: center, center, center, center;
-      background-repeat: no-repeat;
-      transition: background-image 0.45s ease, filter 0.3s ease;
-    }
-
-    /* Floating Glassmorphic Sidebar V3 matching Tutorial 555.mp4 */
-    .glass-sidebar {
-      background: linear-gradient(
-        160deg,
-        rgba(255, 255, 255, 0.14) 0%,
-        var(--glass-bg) 32%,
-        rgba(14, 18, 30, 0.48) 100%
-      );
-      backdrop-filter: blur(22px) saturate(140%);
-      -webkit-backdrop-filter: blur(22px) saturate(140%);
-      border: 1px solid var(--glass-border);
-      box-shadow:
-        0 24px 64px rgba(0, 0, 0, 0.48),
-        inset 0 1px 0 var(--glass-highlight),
-        inset 0 -1px 0 rgba(255, 255, 255, 0.08);
-      border-radius: 24px;
-      transition: width 0.38s cubic-bezier(0.22, 1, 0.36, 1), padding 0.38s cubic-bezier(0.22, 1, 0.36, 1);
-    }
-
-    .glass-panel {
-      background: rgba(18, 22, 34, 0.42);
-      backdrop-filter: blur(22px) saturate(140%);
-      -webkit-backdrop-filter: blur(22px) saturate(140%);
-      border: 1px solid rgba(255, 255, 255, 0.22);
-      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.38), inset 0 1px 0 rgba(255, 255, 255, 0.24);
-      border-radius: 24px;
-    }
-
-    .nav-pill {
-      position: relative;
-      transition: background-color 0.22s ease, transform 0.2s ease, color 0.2s ease, border-color 0.2s ease;
-      border: 1px solid transparent;
-    }
-
-    .nav-pill:hover {
-      background-color: var(--pill-hover);
-      border-color: rgba(255, 255, 255, 0.14);
-    }
-
-    .nav-pill.active {
-      background: linear-gradient(90deg, rgba(255, 255, 255, 0.18) 0%, rgba(255, 255, 255, 0.07) 100%);
-      border-color: rgba(255, 255, 255, 0.26);
-      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.22), 0 6px 18px rgba(0, 0, 0, 0.2);
+      width: 100%;
+      background: transparent !important;
       color: #ffffff;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      overflow-x: hidden;
     }
 
-    .toggle-handle {
-      transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1), background-color 0.2s ease;
+    /* Ultra-clear mirror-like glass sidebar with subtle diagonal sheen & specular rim */
+    .mirror-sidebar {
+      position: relative;
+      background:
+        linear-gradient(
+          128deg,
+          var(--mirror-sheen-top) 0%,
+          rgba(255, 255, 255, 0.07) 18%,
+          var(--mirror-tint) 38%,
+          var(--mirror-sheen-mid) 62%,
+          rgba(255, 255, 255, 0.015) 100%
+        );
+      backdrop-filter: blur(6px) saturate(125%) brightness(1.06);
+      -webkit-backdrop-filter: blur(6px) saturate(125%) brightness(1.06);
+      border: 1px solid var(--mirror-border);
+      border-radius: 24px;
+      box-shadow:
+        0 18px 44px rgba(0, 0, 0, 0.22),
+        inset 1px 1px 0 rgba(255, 255, 255, 0.42),
+        inset -1px -1px 0 rgba(255, 255, 255, 0.14),
+        inset 0 0 18px rgba(255, 255, 255, 0.04);
+      transition: width 0.36s cubic-bezier(0.22, 1, 0.36, 1);
     }
 
-    /* Subtle custom scrollbar */
-    ::-webkit-scrollbar {
-      width: 6px;
-      height: 6px;
+    /* Subtle diagonal mirror reflection streak inside the glass pane */
+    .mirror-sidebar::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      pointer-events: none;
+      background: linear-gradient(
+        112deg,
+        transparent 10%,
+        rgba(255, 255, 255, 0.09) 24%,
+        rgba(255, 255, 255, 0.02) 34%,
+        transparent 46%,
+        rgba(255, 255, 255, 0.05) 74%,
+        transparent 86%
+      );
     }
-    ::-webkit-scrollbar-thumb {
+
+    .floating-text {
+      color: #ffffff;
+      text-shadow: var(--text-float-shadow);
+    }
+
+    .floating-muted {
+      color: rgba(255, 255, 255, 0.86);
+      text-shadow: var(--text-float-shadow);
+    }
+
+    .floating-section {
+      color: rgba(255, 255, 255, 0.72);
+      text-shadow: 0 1px 8px rgba(0, 0, 0, 0.6);
+    }
+
+    .mirror-profile-slot {
+      background: linear-gradient(
+        135deg,
+        rgba(255, 255, 255, 0.11) 0%,
+        rgba(255, 255, 255, 0.025) 60%,
+        rgba(255, 255, 255, 0.05) 100%
+      );
+      border: 1px solid rgba(255, 255, 255, 0.22);
+      box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.32),
+        0 6px 18px rgba(0, 0, 0, 0.12);
+    }
+
+    .mirror-avatar-badge {
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.34);
+      box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.45),
+        0 4px 12px rgba(0, 0, 0, 0.18);
+    }
+
+    .mirror-nav-item {
+      position: relative;
+      border: 1px solid transparent;
+      color: rgba(255, 255, 255, 0.92);
+      text-shadow: var(--text-float-shadow);
+      transition:
+        background-color 0.2s ease,
+        border-color 0.2s ease,
+        box-shadow 0.2s ease,
+        transform 0.18s ease;
+    }
+
+    .mirror-nav-item:hover {
+      background: var(--mirror-pill-hover);
+      border-color: rgba(255, 255, 255, 0.22);
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.26);
+    }
+
+    .mirror-nav-item.is-active {
+      background: linear-gradient(
+        90deg,
+        rgba(255, 255, 255, 0.18) 0%,
+        rgba(255, 255, 255, 0.06) 100%
+      );
+      border-color: rgba(255, 255, 255, 0.34);
+      color: #ffffff;
+      box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.42),
+        0 6px 16px rgba(0, 0, 0, 0.16);
+    }
+
+    .mirror-toggle-btn {
+      background: rgba(255, 255, 255, 0.12);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      border: 1px solid rgba(255, 255, 255, 0.35);
+      box-shadow:
+        0 6px 18px rgba(0, 0, 0, 0.22),
+        inset 0 1px 0 rgba(255, 255, 255, 0.5);
+      transition: transform 0.22s ease, background-color 0.2s ease, border-color 0.2s ease;
+    }
+
+    .mirror-toggle-btn:hover {
       background: rgba(255, 255, 255, 0.22);
-      border-radius: 999px;
+      border-color: rgba(255, 255, 255, 0.55);
+      transform: scale(1.06);
+    }
+
+    .mirror-notif-pill {
+      background: rgba(255, 255, 255, 0.14);
+      border: 1px solid rgba(255, 255, 255, 0.36);
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.4);
     }
   </style>
 </head>
-<body class="custom-bg-stage min-h-screen w-full flex flex-col">
-  <!-- Top Bar -->
-  <header class="w-full max-w-7xl mx-auto px-4 sm:px-6 pt-4 pb-2 flex flex-wrap items-center justify-between gap-3 z-20">
-    <div class="flex items-center gap-3">
-      <div class="px-3.5 py-1.5 rounded-full bg-white/10 border border-white/20 backdrop-blur-md flex items-center gap-2">
-        <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 shadow-[0_0_10px_#34d399]"></span>
-        <span class="font-en font-bold text-xs sm:text-sm tracking-wide">Glassy Sidebar V3</span>
+<body>
+  <!-- Left-aligned clear mirror-glass sidebar over transparent background -->
+  <div class="min-h-screen w-full p-4 sm:p-6 flex items-center justify-start">
+    <aside id="mirrorSidebar" class="mirror-sidebar w-[274px] p-4 select-none z-10" aria-label="CODEXR Sidebar">
+
+      <!-- Expand / Collapse Edge Toggle -->
+      <button
+        id="collapseToggleBtn"
+        type="button"
+        aria-label="Toggle Sidebar"
+        title="Expand / Collapse"
+        class="mirror-toggle-btn absolute -right-3.5 top-14 w-7 h-7 rounded-full text-white flex items-center justify-center cursor-pointer z-20"
+      >
+        <svg id="chevronIcon" class="w-3.5 h-3.5 transition-transform duration-300" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
+        </svg>
+      </button>
+
+      <!-- Traffic Light Dots -->
+      <div class="relative z-10 flex items-center gap-2 px-1.5 pt-0.5 pb-3">
+        <span class="w-3 h-3 rounded-full bg-[#ff5f56] shadow-[0_0_6px_rgba(255,95,86,0.5)]"></span>
+        <span class="w-3 h-3 rounded-full bg-[#ffbd2e] shadow-[0_0_6px_rgba(255,189,46,0.5)]"></span>
+        <span class="w-3 h-3 rounded-full bg-[#27c93f] shadow-[0_0_6px_rgba(39,201,63,0.5)]"></span>
       </div>
-      <span class="text-xs sm:text-sm text-white/80 hidden sm:inline">
-        ট্রান্সপারেন্ট / কাস্টম ব্যাকগ্রাউন্ডে বসানোর উপযোগী গ্লাস স্লাইডার
-      </span>
-    </div>
 
-    <div class="flex items-center gap-2">
-      <button
-        id="quickToggleBtn"
-        type="button"
-        class="px-3.5 py-1.5 rounded-xl bg-white/15 hover:bg-white/25 border border-white/20 text-xs sm:text-sm font-medium transition cursor-pointer"
-      >
-        ↔ Expand / Collapse
-      </button>
-      <button
-        id="toggleHelperBarBtn"
-        type="button"
-        class="px-3.5 py-1.5 rounded-xl bg-white/15 hover:bg-white/25 border border-white/20 text-xs sm:text-sm font-medium transition cursor-pointer"
-      >
-        🎛️ বার লুকান / দেখান
-      </button>
-      <label
-        for="bgUploadInput"
-        class="px-3.5 py-1.5 rounded-xl bg-emerald-500/85 hover:bg-emerald-400 text-slate-950 font-semibold text-xs sm:text-sm transition cursor-pointer shadow-lg"
-      >
-        🖼️ ছবি আপলোড
-      </label>
-      <input id="bgUploadInput" type="file" accept="image/*" class="hidden" />
-    </div>
-  </header>
-
-  <!-- Main Workspace -->
-  <div class="flex-1 w-full max-w-7xl mx-auto px-4 sm:px-6 py-4 grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
-
-    <!-- Left: Floating Glassy Sidebar V3 -->
-    <aside class="lg:col-span-4 xl:col-span-4 flex justify-center lg:justify-start">
-      <div id="glassSidebar" class="glass-sidebar relative w-[276px] p-4 select-none">
-
-        <!-- Collapse / Expand Circular Chevron Button on Right Edge (< when expanded, > when collapsed) -->
-        <button
-          id="sidebarCollapseBtn"
-          type="button"
-          title="Expand / Collapse Sidebar"
-          aria-label="Toggle Sidebar Width"
-          class="toggle-handle absolute -right-3.5 top-14 w-7 h-7 rounded-full bg-slate-900/85 hover:bg-slate-800 border border-white/25 text-white flex items-center justify-center shadow-xl z-30 cursor-pointer"
-        >
-          <svg id="collapseChevron" class="w-3.5 h-3.5 transition-transform duration-300" fill="none" stroke="currentColor" stroke-width="2.4" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
-          </svg>
-        </button>
-
-        <!-- Window Control Dots (Red, Yellow, Green) -->
-        <div id="windowDotsRow" class="flex items-center gap-2 px-1.5 pt-0.5 pb-3">
-          <span class="w-3 h-3 rounded-full bg-[#ff5f56]"></span>
-          <span class="w-3 h-3 rounded-full bg-[#ffbd2e]"></span>
-          <span class="w-3 h-3 rounded-full bg-[#27c93f]"></span>
-        </div>
-
-        <!-- Brand Header: CODEXR (Expanded) / CXR (Collapsed) -->
-        <div class="px-1.5 pb-3 border-b border-white/10 flex items-center justify-between">
-          <div id="brandExpanded" class="flex items-center gap-2 overflow-hidden">
-            <span class="font-en font-extrabold tracking-[0.14em] text-xl sm:text-2xl bg-gradient-to-r from-white via-sky-100 to-indigo-200 bg-clip-text text-transparent drop-shadow-[0_0_12px_rgba(255,255,255,0.22)]">
-              CODEXR
-            </span>
-          </div>
-
-          <div id="brandCollapsed" class="hidden w-full justify-center py-0.5">
-            <span class="font-en font-bold tracking-wider text-xs text-sky-300">
-              CXR
-            </span>
-          </div>
-        </div>
-
-        <!-- User Account Card: softysta.com / Super Admin -->
-        <div id="userProfileBox" class="mt-3 mb-3 p-2.5 rounded-2xl bg-white/[0.05] border border-white/10 flex items-center justify-between gap-2.5">
-          <div class="flex items-center gap-2.5 min-w-0">
-            <div class="w-10 h-10 rounded-xl bg-slate-950/90 border border-white/20 flex items-center justify-center text-white font-en font-extrabold text-lg shrink-0 shadow-inner">
-              S
-            </div>
-            <div class="user-meta min-w-0">
-              <div class="font-en font-semibold text-sm text-white truncate">softysta.com</div>
-              <div class="font-en text-[11px] text-white/65 truncate">Super Admin</div>
-            </div>
-          </div>
-          <svg class="user-meta w-4 h-4 text-white/60 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
-          </svg>
-        </div>
-
-        <!-- Section Label: MENU -->
-        <div class="px-2 pt-0.5 pb-1.5 flex items-center justify-center lg:justify-start">
-          <span class="menu-section-label font-en text-[10px] font-semibold tracking-[0.16em] text-white/55 uppercase">
-            MENU
+      <!-- Brand Header: CODEXR / CXR -->
+      <div class="relative z-10 px-1.5 pb-3 border-b border-white/20 flex items-center justify-between">
+        <div id="brandFull" class="flex items-center">
+          <span class="floating-text font-extrabold tracking-[0.14em] text-2xl">
+            CODEXR
           </span>
         </div>
-
-        <!-- Navigation Items List (1 to 9) -->
-        <nav id="sidebarNavList" class="space-y-1" aria-label="Sidebar Navigation"></nav>
-
-        <!-- Divider & Log Out (Separated toward bottom) -->
-        <div class="mt-6 pt-3 border-t border-white/10">
-          <button
-            id="logoutBtn"
-            type="button"
-            title="Log Out (লগ আউট)"
-            class="nav-pill w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-white/80 hover:text-white cursor-pointer"
-          >
-            <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v9m6.364-5.364a9 9 0 11-12.728 0" />
-            </svg>
-            <span class="nav-label font-en text-sm font-medium truncate">Log Out</span>
-            <span class="nav-bn-tag ml-auto text-[11px] text-white/55">লগ আউট</span>
-          </button>
+        <div id="brandCompact" class="hidden w-full justify-center py-0.5">
+          <span class="floating-text font-bold tracking-wider text-xs">
+            CXR
+          </span>
         </div>
       </div>
+
+      <!-- Profile Card: S / softysta.com / Super Admin -->
+      <div id="profileBlock" class="mirror-profile-slot relative z-10 mt-3 mb-3 p-2.5 rounded-2xl flex items-center justify-between gap-2.5">
+        <div class="flex items-center gap-2.5 min-w-0">
+          <div class="mirror-avatar-badge w-10 h-10 rounded-xl flex items-center justify-center font-extrabold text-lg floating-text shrink-0">
+            S
+          </div>
+          <div class="collapsible-meta min-w-0">
+            <div class="floating-text font-semibold text-sm truncate">softysta.com</div>
+            <div class="floating-muted text-[11px] truncate">Super Admin</div>
+          </div>
+        </div>
+        <svg class="collapsible-meta w-4 h-4 text-white/85 shrink-0" style="filter: drop-shadow(0 1px 6px rgba(0,0,0,0.5));" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
+        </svg>
+      </div>
+
+      <!-- MENU Heading -->
+      <div class="collapsible-meta relative z-10 px-2 pt-0.5 pb-1.5">
+        <span class="floating-section text-[10px] font-semibold tracking-[0.16em] uppercase">
+          MENU
+        </span>
+      </div>
+
+      <!-- Navigation List -->
+      <nav id="navContainer" class="relative z-10 space-y-1"></nav>
+
+      <!-- Log Out Footer -->
+      <div class="relative z-10 mt-6 pt-3 border-t border-white/20">
+        <button
+          id="logoutItem"
+          type="button"
+          title="Log Out"
+          class="mirror-nav-item w-full flex items-center gap-3 px-3 py-2.5 rounded-xl cursor-pointer"
+        >
+          <svg class="w-5 h-5 shrink-0 text-white" style="filter: drop-shadow(0 1px 6px rgba(0,0,0,0.55));" fill="none" stroke="currentColor" stroke-width="2.1" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v9m6.364-5.364a9 9 0 11-12.728 0" />
+          </svg>
+          <span class="collapsible-label text-sm font-medium truncate">Log Out</span>
+        </button>
+      </div>
+
     </aside>
-
-    <!-- Right: Preview Panel & Custom Background Helper Bar -->
-    <section id="helperWorkspacePanel" class="lg:col-span-8 xl:col-span-8 space-y-5">
-
-      <!-- Active Menu Section Card -->
-      <div class="glass-panel p-5 sm:p-7">
-        <div class="flex flex-wrap items-center justify-between gap-3 pb-4 border-b border-white/10">
-          <div>
-            <span class="text-xs px-2.5 py-1 rounded-full bg-white/10 text-emerald-300 font-medium">
-              সক্রিয় মেনু সেকশন
-            </span>
-            <h1 id="activeViewTitle" class="text-2xl sm:text-3xl font-bold text-white mt-2 flex items-center gap-2.5">
-              <span class="font-en">Home</span>
-              <span class="text-lg font-normal text-white/70">(হোম)</span>
-            </h1>
-          </div>
-
-          <div id="statusToast" class="px-3.5 py-1.5 rounded-xl bg-white/10 border border-white/15 text-xs sm:text-sm text-white/90">
-            ট্রান্সপারেন্ট ক্যানভাস সক্রিয় — নিজের ব্যাকগ্রাউন্ড যুক্ত করুন
-          </div>
-        </div>
-
-        <p id="activeViewDesc" class="mt-4 text-sm sm:text-base text-white/80 leading-relaxed">
-          আপনি এখন <strong>Home</strong> মেনুতে আছেন। স্লাইডারের যেকোনো মেনুতে ক্লিক করলে সক্রিয় পিল হাইলাইট সরে যাবে এবং ডান পাশের কাস্টমাইজার থেকে নিজের ব্যাকগ্রাউন্ড ছবি বা মোড যাচাই করতে পারবেন।
-        </p>
-
-        <!-- Quick Stats Strip -->
-        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3.5 mt-5">
-          <div class="p-3.5 rounded-2xl bg-white/[0.05] border border-white/10">
-            <div class="text-xs text-white/60">স্লাইডার মোড</div>
-            <div id="sidebarModeLabel" class="font-en font-bold text-base text-white mt-1">Expanded (Full)</div>
-          </div>
-          <div class="p-3.5 rounded-2xl bg-white/[0.05] border border-white/10">
-            <div class="text-xs text-white/60">ব্যাকগ্রাউন্ড অবস্থা</div>
-            <div id="activeBgLabel" class="font-semibold text-base text-emerald-300 mt-1">Transparent Canvas</div>
-          </div>
-          <div class="p-3.5 rounded-2xl bg-white/[0.05] border border-white/10">
-            <div class="text-xs text-white/60">নোটিফিকেশন ব্যাজ</div>
-            <div id="notifCountDisplay" class="font-semibold text-base text-amber-300 mt-1">? / ২টি আপডেট</div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Custom Background Switcher Studio -->
-      <div class="glass-panel p-5 sm:p-7 space-y-5">
-        <div class="flex flex-wrap items-center justify-between gap-2">
-          <div>
-            <h2 class="text-lg sm:text-xl font-bold text-white">
-              ব্যাকগ্রাউন্ড ও গ্লাস প্রিভিউ কন্ট্রোল (Background & Glass Preview)
-            </h2>
-            <p class="text-xs sm:text-sm text-white/70 mt-0.5">
-              ডিফল্টভাবে কোনো ওয়ালপেপার যুক্ত নেই; ট্রান্সপারেন্ট রাখা বা নিজের ছবি/গ্রেডিয়েন্ট বসিয়ে দেখার সুবিধা রয়েছে
-            </p>
-          </div>
-          <button
-            id="clearCustomBgBtn"
-            type="button"
-            class="px-3 py-1.5 rounded-xl bg-white/10 hover:bg-white/20 border border-white/15 text-xs text-white/85 transition cursor-pointer"
-          >
-            Transparent করুন
-          </button>
-        </div>
-
-        <!-- Preset Gradient Swatches -->
-        <div id="bgPresetGrid" class="grid grid-cols-2 sm:grid-cols-4 gap-3"></div>
-
-        <!-- Glass Blur & Glass Fill Opacity Sliders -->
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
-          <div class="p-3.5 rounded-2xl bg-white/[0.05] border border-white/10 space-y-2">
-            <div class="flex items-center justify-between text-xs sm:text-sm">
-              <span class="text-white/85">গ্লাস ব্লার (Backdrop Blur)</span>
-              <span id="blurValueLabel" class="font-en font-semibold text-sky-300">22px</span>
-            </div>
-            <input id="blurRangeInput" type="range" min="8" max="36" value="22" class="w-full accent-sky-400 cursor-pointer" />
-          </div>
-
-          <div class="p-3.5 rounded-2xl bg-white/[0.05] border border-white/10 space-y-2">
-            <div class="flex items-center justify-between text-xs sm:text-sm">
-              <span class="text-white/85">গ্লাস ফিল অপাসিটি (Glass Fill)</span>
-              <span id="opacityValueLabel" class="font-en font-semibold text-emerald-300">42%</span>
-            </div>
-            <input id="opacityRangeInput" type="range" min="20" max="80" value="42" class="w-full accent-emerald-400 cursor-pointer" />
-          </div>
-        </div>
-      </div>
-
-    </section>
   </div>
 
   <script>
-    // Exact 9 menu items in order from Tutorial 555.mp4 (plus Log Out below)
-    const MENU_ITEMS = [
-      { id: "home", en: "Home", bn: "হোম", descBn: "মূল ড্যাশবোর্ড ও সাম্প্রতিক কার্যক্রমের সারসংক্ষেপ দেখুন।" },
-      { id: "post", en: "Post", bn: "পোস্ট", descBn: "নতুন পোস্ট তৈরি, ড্রাফট ও পাবলিশড কন্টেন্ট পরিচালনা করুন।" },
-      { id: "messages", en: "Messages", bn: "মেসেজ", descBn: "ক্লায়েন্ট ও টিমের ইনবক্স বার্তাগুলো দ্রুত দেখুন ও উত্তর দিন।" },
-      { id: "friends", en: "Friends", bn: "ফ্রেন্ডস", descBn: "আপনার কানেকশন, পরিচিতি ও নেটওয়ার্ক তালিকা দেখুন।" },
-      { id: "notifications", en: "Notifications", bn: "নোটিফিকেশন", badge: "?", descBn: "নতুন আপডেট, মেনশন ও অ্যাক্টিভিটি অ্যালার্টগুলো পর্যালোচনা করুন।" },
-      { id: "group", en: "Group", bn: "গ্রুপ", descBn: "কমিউনিটি ও প্রজেক্ট গ্রুপগুলোর আলোচনা ও সদস্য দেখুন।" },
-      { id: "pages", en: "Pages", bn: "পেজেস", descBn: "আপনার পরিচালিত ব্র্যান্ড ও বিজনেস পেজগুলো নিয়ন্ত্রণ করুন।" },
-      { id: "games", en: "Games", bn: "গেমস", descBn: "বিরতিতে হালকা গেমস ও ইন্টারেক্টিভ মিনি-অ্যাক্টিভিটি উপভোগ করুন।" },
-      { id: "setting", en: "Setting", bn: "সেটিংস", descBn: "অ্যাকাউন্ট, প্রাইভেসি, থিম ও সিস্টেম পছন্দ পরিবর্তন করুন।" }
+    const ITEMS = [
+      { id: "home", label: "Home" },
+      { id: "post", label: "Post" },
+      { id: "messages", label: "Messages" },
+      { id: "friends", label: "Friends" },
+      { id: "notifications", label: "Notifications", badge: "?" },
+      { id: "group", label: "Group" },
+      { id: "pages", label: "Pages" },
+      { id: "games", label: "Games" },
+      { id: "setting", label: "Setting" }
     ];
 
-    // Optional preview backdrops (default starts transparent with no baked-in wallpaper)
-    const BG_PRESETS = [
-      {
-        id: "emerald-midnight",
-        name: "Emerald Midnight",
-        bnName: "এমারল্ড মিডনাইট",
-        preview: "linear-gradient(135deg, #064e3b 0%, #0f172a 55%, #1e1b4b 100%)",
-        l1: "radial-gradient(circle at 18% 20%, rgba(16, 185, 129, 0.38), transparent 46%)",
-        l2: "radial-gradient(circle at 82% 76%, rgba(56, 189, 248, 0.25), transparent 52%)",
-        base: "linear-gradient(135deg, #061816 0%, #0f172a 55%, #17153b 100%)"
-      },
-      {
-        id: "sunset-amber",
-        name: "Sunset Amber",
-        bnName: "সানসেট অ্যাম্বার",
-        preview: "linear-gradient(135deg, #7c2d12 0%, #451a03 55%, #1e1b4b 100%)",
-        l1: "radial-gradient(circle at 20% 22%, rgba(245, 158, 11, 0.38), transparent 48%)",
-        l2: "radial-gradient(circle at 80% 78%, rgba(244, 63, 94, 0.25), transparent 50%)",
-        base: "linear-gradient(135deg, #1f0d07 0%, #2b130d 55%, #12132b 100%)"
-      },
-      {
-        id: "ocean-aurora",
-        name: "Ocean Aurora",
-        bnName: "ওশান অরোরা",
-        preview: "linear-gradient(135deg, #0369a1 0%, #0f172a 55%, #134e4a 100%)",
-        l1: "radial-gradient(circle at 22% 18%, rgba(14, 165, 233, 0.36), transparent 48%)",
-        l2: "radial-gradient(circle at 80% 75%, rgba(45, 212, 191, 0.26), transparent 50%)",
-        base: "linear-gradient(135deg, #071926 0%, #0c192c 55%, #092424 100%)"
-      },
-      {
-        id: "velvet-plum",
-        name: "Velvet Plum",
-        bnName: "ভেলভেট প্লাম",
-        preview: "linear-gradient(135deg, #581c87 0%, #1e1b4b 55%, #090d16 100%)",
-        l1: "radial-gradient(circle at 20% 24%, rgba(192, 132, 252, 0.32), transparent 46%)",
-        l2: "radial-gradient(circle at 80% 74%, rgba(236, 72, 153, 0.24), transparent 50%)",
-        base: "linear-gradient(135deg, #190929 0%, #14112c 55%, #080b14 100%)"
-      }
-    ];
-
-    function renderMenuIcon(id) {
+    function getIconSvg(id) {
+      const shadowStyle = `style="filter: drop-shadow(0 1px 6px rgba(0,0,0,0.55));"`;
       switch (id) {
         case "home":
-          return `<svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 10.5L12 3l9 7.5V20a1 1 0 01-1 1h-5v-6H9v6H4a1 1 0 01-1-1v-9.5z"/></svg>`;
+          return `<svg class="w-5 h-5 shrink-0 text-white" ${shadowStyle} fill="none" stroke="currentColor" stroke-width="2.1" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 10.5L12 3l9 7.5V20a1 1 0 01-1 1h-5v-6H9v6H4a1 1 0 01-1-1v-9.5z"/></svg>`;
         case "post":
-          return `<svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>`;
+          return `<svg class="w-5 h-5 shrink-0 text-white" ${shadowStyle} fill="none" stroke="currentColor" stroke-width="2.1" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>`;
         case "messages":
-          return `<svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>`;
+          return `<svg class="w-5 h-5 shrink-0 text-white" ${shadowStyle} fill="none" stroke="currentColor" stroke-width="2.1" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>`;
         case "friends":
-          return `<svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/></svg>`;
+          return `<svg class="w-5 h-5 shrink-0 text-white" ${shadowStyle} fill="none" stroke="currentColor" stroke-width="2.1" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/></svg>`;
         case "notifications":
-          return `<svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/></svg>`;
+          return `<svg class="w-5 h-5 shrink-0 text-white" ${shadowStyle} fill="none" stroke="currentColor" stroke-width="2.1" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/></svg>`;
         case "group":
-          return `<svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/></svg>`;
+          return `<svg class="w-5 h-5 shrink-0 text-white" ${shadowStyle} fill="none" stroke="currentColor" stroke-width="2.1" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/></svg>`;
         case "pages":
-          return `<svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2"/></svg>`;
+          return `<svg class="w-5 h-5 shrink-0 text-white" ${shadowStyle} fill="none" stroke="currentColor" stroke-width="2.1" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2"/></svg>`;
         case "games":
-          return `<svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 5v2m0 4v2m0 4v2M5 5a2 2 0 00-2 2v3a2 2 0 110 4v3a2 2 0 002 2h14a2 2 0 002-2v-3a2 2 0 110-4V7a2 2 0 00-2-2H5z"/></svg>`;
+          return `<svg class="w-5 h-5 shrink-0 text-white" ${shadowStyle} fill="none" stroke="currentColor" stroke-width="2.1" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 5v2m0 4v2m0 4v2M5 5a2 2 0 00-2 2v3a2 2 0 110 4v3a2 2 0 002 2h14a2 2 0 002-2v-3a2 2 0 110-4V7a2 2 0 00-2-2H5z"/></svg>`;
         case "setting":
         default:
-          return `<svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg>`;
+          return `<svg class="w-5 h-5 shrink-0 text-white" ${shadowStyle} fill="none" stroke="currentColor" stroke-width="2.1" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg>`;
       }
     }
 
-    let activeMenuId = "home";
-    let isCollapsed = false;
+    let activeId = "home";
+    let collapsed = false;
 
-    const sidebarNavList = document.getElementById("sidebarNavList");
-    const glassSidebar = document.getElementById("glassSidebar");
-    const collapseChevron = document.getElementById("collapseChevron");
-    const brandExpanded = document.getElementById("brandExpanded");
-    const brandCollapsed = document.getElementById("brandCollapsed");
-    const activeViewTitle = document.getElementById("activeViewTitle");
-    const activeViewDesc = document.getElementById("activeViewDesc");
-    const statusToast = document.getElementById("statusToast");
-    const sidebarModeLabel = document.getElementById("sidebarModeLabel");
-    const activeBgLabel = document.getElementById("activeBgLabel");
-    const bgPresetGrid = document.getElementById("bgPresetGrid");
-    const helperWorkspacePanel = document.getElementById("helperWorkspacePanel");
+    const sidebarEl = document.getElementById("mirrorSidebar");
+    const navContainer = document.getElementById("navContainer");
+    const toggleBtn = document.getElementById("collapseToggleBtn");
+    const chevronIcon = document.getElementById("chevronIcon");
+    const brandFull = document.getElementById("brandFull");
+    const brandCompact = document.getElementById("brandCompact");
+    const profileBlock = document.getElementById("profileBlock");
+    const logoutItem = document.getElementById("logoutItem");
 
-    function renderSidebarItems() {
-      sidebarNavList.innerHTML = "";
-      MENU_ITEMS.forEach((item) => {
-        const isActive = item.id === activeMenuId;
+    function renderNav() {
+      navContainer.innerHTML = "";
+      ITEMS.forEach((item) => {
+        const isActive = item.id === activeId;
         const btn = document.createElement("button");
         btn.type = "button";
-        btn.title = `${item.en} (${item.bn})`;
-        btn.className = `nav-pill w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-left cursor-pointer ${
-          isActive ? "active text-white" : "text-white/75 hover:text-white"
-        }`;
-        if (isCollapsed) {
-          btn.classList.add("justify-center", "px-2");
-        }
+        btn.title = item.label;
+        btn.className = `mirror-nav-item w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-left cursor-pointer ${
+          isActive ? "is-active font-semibold" : "font-medium"
+        } ${collapsed ? "justify-center px-2" : ""}`;
 
-        const badgeHtml = item.badge
-          ? `<span class="nav-badge ${
-              isCollapsed ? "hidden" : "ml-auto"
-            } w-5 h-5 rounded-full bg-slate-950/90 border border-white/25 text-white font-en font-bold text-[11px] flex items-center justify-center shadow">${item.badge}</span>`
-          : "";
-
-        const bnHintHtml = !isCollapsed && !item.badge
-          ? `<span class="nav-bn-tag ml-auto text-[11px] text-white/50">${item.bn}</span>`
+        const badge = item.badge && !collapsed
+          ? `<span class="mirror-notif-pill ml-auto w-5 h-5 rounded-full text-white text-[11px] font-bold flex items-center justify-center">${item.badge}</span>`
           : "";
 
         btn.innerHTML = `
-          ${renderMenuIcon(item.id)}
-          <span class="nav-label ${isCollapsed ? "hidden" : ""} font-en text-sm font-medium truncate">${item.en}</span>
-          ${bnHintHtml}
-          ${badgeHtml}
+          ${getIconSvg(item.id)}
+          <span class="${collapsed ? "hidden" : ""} text-sm truncate">${item.label}</span>
+          ${badge}
         `;
 
         btn.addEventListener("click", () => {
-          activeMenuId = item.id;
-          renderSidebarItems();
-          activeViewTitle.innerHTML = `
-            <span class="font-en">${item.en}</span>
-            <span class="text-lg font-normal text-white/70">(${item.bn})</span>
-          `;
-          activeViewDesc.innerHTML = `আপনি এখন <strong>${item.en} (${item.bn})</strong> সেকশনে আছেন। ${item.descBn}`;
-          statusToast.textContent = `সিলেক্ট করা হয়েছে: ${item.en} (${item.bn})`;
+          activeId = item.id;
+          renderNav();
         });
 
-        sidebarNavList.appendChild(btn);
+        navContainer.appendChild(btn);
       });
     }
 
-    function applyCollapseState(collapsed) {
-      isCollapsed = collapsed;
-      if (isCollapsed) {
-        glassSidebar.style.width = "76px";
-        collapseChevron.style.transform = "rotate(180deg)";
-        brandExpanded.classList.add("hidden");
-        brandCollapsed.classList.remove("hidden");
-        brandCollapsed.classList.add("flex");
-        document.querySelectorAll(".user-meta, .menu-section-label, .nav-bn-tag, .nav-badge, #logoutBtn .nav-label").forEach((el) => {
-          el.classList.add("hidden");
-        });
-        document.getElementById("userProfileBox").classList.add("justify-center", "p-2");
-        document.getElementById("logoutBtn").classList.add("justify-center", "px-2");
-        sidebarModeLabel.textContent = "Collapsed (CXR)";
-        statusToast.textContent = "স্লাইডার Compact (CXR) মোডে আছে";
-      } else {
-        glassSidebar.style.width = "276px";
-        collapseChevron.style.transform = "rotate(0deg)";
-        brandExpanded.classList.remove("hidden");
-        brandCollapsed.classList.add("hidden");
-        brandCollapsed.classList.remove("flex");
-        document.querySelectorAll(".user-meta, .menu-section-label, .nav-bn-tag, .nav-badge, #logoutBtn .nav-label").forEach((el) => {
-          el.classList.remove("hidden");
-        });
-        document.getElementById("userProfileBox").classList.remove("justify-center", "p-2");
-        document.getElementById("logoutBtn").classList.remove("justify-center", "px-2");
-        sidebarModeLabel.textContent = "Expanded (Full)";
-        statusToast.textContent = "স্লাইডার Full (CODEXR) মোডে আছে";
-      }
-      renderSidebarItems();
+    function setCollapsed(nextCollapsed) {
+      collapsed = nextCollapsed;
+      sidebarEl.style.width = collapsed ? "76px" : "274px";
+      chevronIcon.style.transform = collapsed ? "rotate(180deg)" : "rotate(0deg)";
+
+      brandFull.classList.toggle("hidden", collapsed);
+      brandCompact.classList.toggle("hidden", !collapsed);
+      brandCompact.classList.toggle("flex", collapsed);
+
+      document.querySelectorAll(".collapsible-meta, .collapsible-label").forEach((el) => {
+        el.classList.toggle("hidden", collapsed);
+      });
+
+      profileBlock.classList.toggle("justify-center", collapsed);
+      profileBlock.classList.toggle("p-2", collapsed);
+      logoutItem.classList.toggle("justify-center", collapsed);
+      logoutItem.classList.toggle("px-2", collapsed);
+
+      renderNav();
     }
 
-    function applyTransparentBackground() {
-      document.documentElement.style.setProperty("--bg-custom-image", "none");
-      document.documentElement.style.setProperty("--bg-layer-1", "transparent");
-      document.documentElement.style.setProperty("--bg-layer-2", "transparent");
-      document.documentElement.style.setProperty("--bg-base", "transparent");
-      activeBgLabel.textContent = "Transparent Canvas";
-      statusToast.textContent = "ব্যাকগ্রাউন্ড ট্রান্সপারেন্ট করা হয়েছে";
-    }
-
-    // Background Preset Cards (optional preview backdrops)
-    function applyPreset(preset) {
-      document.documentElement.style.setProperty("--bg-custom-image", "none");
-      document.documentElement.style.setProperty("--bg-layer-1", preset.l1);
-      document.documentElement.style.setProperty("--bg-layer-2", preset.l2);
-      document.documentElement.style.setProperty("--bg-base", preset.base);
-      activeBgLabel.textContent = `${preset.bnName} (${preset.name})`;
-      statusToast.textContent = `ব্যাকগ্রাউন্ড পরিবর্তন হয়েছে: ${preset.bnName}`;
-    }
-
-    BG_PRESETS.forEach((preset) => {
-      const card = document.createElement("button");
-      card.type = "button";
-      card.className = "group rounded-2xl overflow-hidden border border-white/15 hover:border-white/40 transition text-left cursor-pointer bg-white/5";
-      card.innerHTML = `
-        <div class="h-14 w-full" style="background: ${preset.preview};"></div>
-        <div class="p-2.5">
-          <div class="text-xs font-bold text-white truncate">${preset.bnName}</div>
-          <div class="font-en text-[11px] text-white/60 truncate">${preset.name}</div>
-        </div>
-      `;
-      card.addEventListener("click", () => applyPreset(preset));
-      bgPresetGrid.appendChild(card);
+    toggleBtn.addEventListener("click", () => {
+      setCollapsed(!collapsed);
     });
 
-    // Custom Image Upload
-    document.getElementById("bgUploadInput").addEventListener("change", (e) => {
-      const file = e.target.files && e.target.files[0];
-      if (!file) return;
-      const reader = new FileReader();
-      reader.onload = (ev) => {
-        const dataUrl = ev.target.result;
-        document.documentElement.style.setProperty("--bg-custom-image", `url("${dataUrl}")`);
-        activeBgLabel.textContent = `কাস্টম ছবি: ${file.name}`;
-        statusToast.textContent = `কাস্টম ব্যাকগ্রাউন্ড ছবি যুক্ত হয়েছে`;
-      };
-      reader.readAsDataURL(file);
+    logoutItem.addEventListener("click", () => {
+      activeId = "home";
+      renderNav();
     });
 
-    // Reset to Transparent Background
-    document.getElementById("clearCustomBgBtn").addEventListener("click", () => {
-      applyTransparentBackground();
-      document.getElementById("bgUploadInput").value = "";
-    });
-
-    // Hide / Show Helper Panel
-    let helperVisible = true;
-    document.getElementById("toggleHelperBarBtn").addEventListener("click", () => {
-      helperVisible = !helperVisible;
-      helperWorkspacePanel.classList.toggle("hidden", !helperVisible);
-      document.getElementById("toggleHelperBarBtn").textContent = helperVisible ? "🎛️ বার লুকান / দেখান" : "🎛️ বার দেখান";
-    });
-
-    // Blur & Glass Fill Opacity Controls
-    const blurRangeInput = document.getElementById("blurRangeInput");
-    const blurValueLabel = document.getElementById("blurValueLabel");
-    const opacityRangeInput = document.getElementById("opacityRangeInput");
-    const opacityValueLabel = document.getElementById("opacityValueLabel");
-
-    blurRangeInput.addEventListener("input", (e) => {
-      const val = e.target.value;
-      blurValueLabel.textContent = `${val}px`;
-      glassSidebar.style.backdropFilter = `blur(${val}px) saturate(140%)`;
-      glassSidebar.style.webkitBackdropFilter = `blur(${val}px) saturate(140%)`;
-    });
-
-    opacityRangeInput.addEventListener("input", (e) => {
-      const pct = Number(e.target.value);
-      opacityValueLabel.textContent = `${pct}%`;
-      const alpha = (pct / 100).toFixed(2);
-      document.documentElement.style.setProperty("--glass-bg", `rgba(18, 22, 34, ${alpha})`);
-    });
-
-    // Toggle Buttons
-    document.getElementById("sidebarCollapseBtn").addEventListener("click", () => {
-      applyCollapseState(!isCollapsed);
-    });
-
-    document.getElementById("quickToggleBtn").addEventListener("click", () => {
-      applyCollapseState(!isCollapsed);
-    });
-
-    document.getElementById("logoutBtn").addEventListener("click", () => {
-      statusToast.textContent = "Log Out (লগ আউট) বাটনে ক্লিক করা হয়েছে";
-      activeViewTitle.innerHTML = `<span class="font-en">Log Out</span> <span class="text-lg font-normal text-white/70">(লগ আউট)</span>`;
-      activeViewDesc.innerHTML = `সেশন লগ আউট অ্যাকশন ট্রিগার হয়েছে। পুনরায় কাজ শুরু করতে যেকোনো মেনু আইটেমে ক্লিক করুন।`;
-    });
-
-    // Initial Render
-    renderSidebarItems();
+    renderNav();
   </script>
 </body>
 </html>
