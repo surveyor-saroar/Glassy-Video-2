@@ -3,33 +3,569 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Centered Flexbox Background</title>
+  <title>Glassy Sidebar V3</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
   <style>
+    :root {
+      --glass-bg: rgba(20, 22, 34, 0.56);
+      --glass-border: rgba(255, 255, 255, 0.22);
+      --glass-highlight: rgba(255, 255, 255, 0.34);
+      --pill-active: rgba(255, 255, 255, 0.16);
+      --pill-hover: rgba(255, 255, 255, 0.09);
+      --bg-layer-1: radial-gradient(circle at 18% 20%, rgba(16, 185, 129, 0.35), transparent 45%);
+      --bg-layer-2: radial-gradient(circle at 82% 76%, rgba(245, 158, 11, 0.30), transparent 50%);
+      --bg-base: linear-gradient(135deg, #091316 0%, #0f172a 52%, #1e1b4b 100%);
+      --bg-custom-image: none;
+    }
+
     * {
       box-sizing: border-box;
-      margin: 0;
-      padding: 0;
     }
 
     body {
+      margin: 0;
       min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      align-items: center;     /* অনুভূমিকভাবে (Horizontal) মাঝে রাখে */
-      justify-content: center; /* উল্লম্বভাবে (Vertical) মাঝে রাখে */
-      background-color: #111827;
-      color: #f9fafb;
-      font-family: system-ui, -apple-system, sans-serif;
-      padding: 20px;
+      font-family: 'Hind Siliguri', 'Inter', sans-serif;
+      color: #f8fafc;
+      overflow-x: hidden;
+    }
+
+    .font-en {
+      font-family: 'Inter', 'Hind Siliguri', sans-serif;
+    }
+
+    /* Customizable Background Layer (Original video background excluded) */
+    .custom-bg-stage {
+      background-image: var(--bg-custom-image), var(--bg-layer-1), var(--bg-layer-2), var(--bg-base);
+      background-size: cover, cover, cover, cover;
+      background-position: center, center, center, center;
+      background-repeat: no-repeat;
+      transition: background-image 0.45s ease, filter 0.3s ease;
+    }
+
+    /* Floating Glassmorphic Sidebar V3 */
+    .glass-sidebar {
+      background: linear-gradient(
+        160deg,
+        rgba(255, 255, 255, 0.15) 0%,
+        var(--glass-bg) 28%,
+        rgba(12, 14, 24, 0.68) 100%
+      );
+      backdrop-filter: blur(22px) saturate(155%);
+      -webkit-backdrop-filter: blur(22px) saturate(155%);
+      border: 1px solid var(--glass-border);
+      box-shadow:
+        0 24px 64px rgba(0, 0, 0, 0.55),
+        inset 0 1px 0 var(--glass-highlight),
+        inset 0 -1px 0 rgba(255, 255, 255, 0.08);
+      border-radius: 28px;
+      transition: width 0.38s cubic-bezier(0.22, 1, 0.36, 1), padding 0.38s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    .glass-panel {
+      background: rgba(10, 14, 24, 0.58);
+      backdrop-filter: blur(18px) saturate(140%);
+      -webkit-backdrop-filter: blur(18px) saturate(140%);
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.42), inset 0 1px 0 rgba(255, 255, 255, 0.14);
+      border-radius: 24px;
+    }
+
+    .nav-pill {
+      position: relative;
+      transition: background-color 0.22s ease, transform 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+      border: 1px solid transparent;
+    }
+
+    .nav-pill:hover {
+      background-color: var(--pill-hover);
+      border-color: rgba(255, 255, 255, 0.12);
+    }
+
+    .nav-pill.active {
+      background: linear-gradient(90deg, rgba(255, 255, 255, 0.2) 0%, rgba(255, 255, 255, 0.08) 100%);
+      border-color: rgba(255, 255, 255, 0.26);
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.25), 0 6px 18px rgba(0, 0, 0, 0.22);
+      color: #ffffff;
+    }
+
+    .toggle-handle {
+      transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1), background-color 0.2s ease;
+    }
+
+    /* Subtle custom scrollbar */
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: rgba(255, 255, 255, 0.22);
+      border-radius: 999px;
     }
   </style>
 </head>
-<body>
+<body class="custom-bg-stage min-h-screen w-full flex flex-col">
+  <!-- Top Bar -->
+  <header class="w-full max-w-7xl mx-auto px-4 sm:px-6 pt-4 pb-2 flex flex-wrap items-center justify-between gap-3 z-20">
+    <div class="flex items-center gap-3">
+      <div class="px-3.5 py-1.5 rounded-full bg-white/10 border border-white/20 backdrop-blur-md flex items-center gap-2">
+        <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 shadow-[0_0_10px_#34d399]"></span>
+        <span class="font-en font-bold text-xs sm:text-sm tracking-wide">Glassy Sidebar V3</span>
+      </div>
+      <span class="text-xs sm:text-sm text-white/80 hidden sm:inline">
+        কাস্টম ব্যাকগ্রাউন্ডের ওপর ফ্লোটিং গ্লাসমর্ফিক নেভিগেশন স্লাইডার
+      </span>
+    </div>
 
-  <div>
-    <!-- আপনার কন্টেন্ট এখানে থাকবে -->
-    <h1>কন্টেন্ট এখন স্ক্রিনের মাঝে</h1>
+    <div class="flex items-center gap-2">
+      <button
+        id="quickToggleBtn"
+        type="button"
+        class="px-3.5 py-1.5 rounded-xl bg-white/15 hover:bg-white/25 border border-white/20 text-xs sm:text-sm font-medium transition cursor-pointer"
+      >
+        ↔ Expand / Collapse
+      </button>
+      <label
+        for="bgUploadInput"
+        class="px-3.5 py-1.5 rounded-xl bg-emerald-500/80 hover:bg-emerald-400 text-slate-950 font-semibold text-xs sm:text-sm transition cursor-pointer shadow-lg"
+      >
+        🖼️ ছবি আপলোড
+      </label>
+      <input id="bgUploadInput" type="file" accept="image/*" class="hidden" />
+    </div>
+  </header>
+
+  <!-- Main Workspace -->
+  <div class="flex-1 w-full max-w-7xl mx-auto px-4 sm:px-6 py-4 grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+
+    <!-- Left: Floating Glassy Sidebar V3 -->
+    <aside class="lg:col-span-4 xl:col-span-4 flex justify-center lg:justify-start">
+      <div id="glassSidebar" class="glass-sidebar relative w-[276px] p-4 select-none">
+
+        <!-- Collapse / Expand Floating Handle Button on Right Edge -->
+        <button
+          id="sidebarCollapseBtn"
+          type="button"
+          title="Expand / Collapse Sidebar"
+          aria-label="Toggle Sidebar Width"
+          class="toggle-handle absolute -right-3.5 top-16 w-7 h-7 rounded-full bg-slate-900/90 hover:bg-slate-800 border border-white/30 text-white flex items-center justify-center shadow-xl z-30 cursor-pointer"
+        >
+          <svg id="collapseChevron" class="w-4 h-4 transition-transform duration-300" fill="none" stroke="currentColor" stroke-width="2.4" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
+          </svg>
+        </button>
+
+        <!-- Window Control Dots -->
+        <div id="windowDotsRow" class="flex items-center gap-2 px-1.5 pt-0.5 pb-3">
+          <span class="w-3 h-3 rounded-full bg-[#ff5f56] shadow-[0_0_8px_rgba(255,95,86,0.5)]"></span>
+          <span class="w-3 h-3 rounded-full bg-[#ffbd2e] shadow-[0_0_8px_rgba(255,189,46,0.45)]"></span>
+          <span class="w-3 h-3 rounded-full bg-[#27c93f] shadow-[0_0_8px_rgba(39,201,63,0.45)]"></span>
+        </div>
+
+        <!-- Brand Header: CODEXR (Expanded) / CXR (Collapsed) -->
+        <div class="px-1.5 pb-3.5 border-b border-white/10 flex items-center justify-between">
+          <div id="brandExpanded" class="flex items-center gap-2.5 overflow-hidden">
+            <span class="font-en font-extrabold tracking-[0.14em] text-xl sm:text-2xl text-white drop-shadow">
+              CODEXR
+            </span>
+            <span class="text-[11px] px-2 py-0.5 rounded-full bg-white/10 border border-white/15 text-white/80 font-en">
+              V3
+            </span>
+          </div>
+
+          <div id="brandCollapsed" class="hidden w-full justify-center py-0.5">
+            <span class="font-en font-extrabold tracking-wider text-sm text-sky-300">
+              CXR
+            </span>
+          </div>
+        </div>
+
+        <!-- User Account Card: softysta.com / Super Admin -->
+        <div id="userProfileBox" class="mt-3 mb-3 p-2.5 rounded-2xl bg-white/[0.06] border border-white/10 flex items-center justify-between gap-2.5">
+          <div class="flex items-center gap-2.5 min-w-0">
+            <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-slate-800 to-slate-950 border border-white/25 flex items-center justify-center text-white font-en font-extrabold text-lg shrink-0 shadow-inner">
+              S
+            </div>
+            <div class="user-meta min-w-0">
+              <div class="font-en font-semibold text-sm text-white truncate">softysta.com</div>
+              <div class="font-en text-[11px] text-white/65 truncate">Super Admin</div>
+            </div>
+          </div>
+          <svg class="user-meta w-4 h-4 text-white/60 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
+          </svg>
+        </div>
+
+        <!-- Section Label: MENU -->
+        <div class="px-2 pt-1 pb-2">
+          <span class="menu-section-label font-en text-[11px] font-semibold tracking-[0.16em] text-white/50 uppercase">
+            MENU
+          </span>
+        </div>
+
+        <!-- Navigation Items List -->
+        <nav id="sidebarNavList" class="space-y-1" aria-label="Sidebar Navigation"></nav>
+
+        <!-- Divider & Log Out -->
+        <div class="mt-3 pt-3 border-t border-white/10">
+          <button
+            id="logoutBtn"
+            type="button"
+            class="nav-pill w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-white/80 hover:text-rose-200 cursor-pointer"
+          >
+            <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v9m6.364-5.364a9 9 0 11-12.728 0" />
+            </svg>
+            <span class="nav-label font-en text-sm font-medium truncate">Log Out</span>
+            <span class="nav-bn-tag ml-auto text-[11px] text-white/55">লগ আউট</span>
+          </button>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Right: Active View Preview & Custom Background Studio (Bengali + English) -->
+    <section class="lg:col-span-8 xl:col-span-8 space-y-5">
+
+      <!-- Active Menu Section Card -->
+      <div class="glass-panel p-5 sm:p-7">
+        <div class="flex flex-wrap items-center justify-between gap-3 pb-4 border-b border-white/10">
+          <div>
+            <span class="text-xs px-2.5 py-1 rounded-full bg-white/10 text-emerald-300 font-medium">
+              সক্রিয় মেনু সেকশন
+            </span>
+            <h1 id="activeViewTitle" class="text-2xl sm:text-3xl font-bold text-white mt-2 flex items-center gap-2.5">
+              <span class="font-en">Home</span>
+              <span class="text-lg font-normal text-white/70">(হোম / ড্যাশবোর্ড)</span>
+            </h1>
+          </div>
+
+          <div id="statusToast" class="px-3.5 py-1.5 rounded-xl bg-white/10 border border-white/15 text-xs sm:text-sm text-white/90">
+            স্লাইডার প্রস্তুত — যেকোনো মেনু বা ব্যাকগ্রাউন্ড বেছে নিন
+          </div>
+        </div>
+
+        <p id="activeViewDesc" class="mt-4 text-sm sm:text-base text-white/80 leading-relaxed">
+          আপনি এখন <strong>Home</strong> মেনুতে আছেন। বাঁ পাশের গ্লাস স্লাইডারের যেকোনো আইটেমে ক্লিক করলে এখানে সেকশন আপডেট হবে এবং ওপরে-নিচের হ্যান্ডেল বা বাটন দিয়ে স্লাইডার ছোট-বড় করা যাবে।
+        </p>
+
+        <!-- Quick Stats Strip -->
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3.5 mt-5">
+          <div class="p-3.5 rounded-2xl bg-white/[0.05] border border-white/10">
+            <div class="text-xs text-white/60">স্লাইডার মোড</div>
+            <div id="sidebarModeLabel" class="font-en font-bold text-base text-white mt-1">Expanded (Full)</div>
+          </div>
+          <div class="p-3.5 rounded-2xl bg-white/[0.05] border border-white/10">
+            <div class="text-xs text-white/60">ব্যাকগ্রাউন্ড থিম</div>
+            <div id="activeBgLabel" class="font-semibold text-base text-emerald-300 mt-1">Emerald Midnight</div>
+          </div>
+          <div class="p-3.5 rounded-2xl bg-white/[0.05] border border-white/10">
+            <div class="text-xs text-white/60">অপঠিত নোটিফিকেশন</div>
+            <div id="notifCountDisplay" class="font-semibold text-base text-amber-300 mt-1">২টি নতুন নোটিফিকেশন</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Custom Background Switcher Studio -->
+      <div class="glass-panel p-5 sm:p-7 space-y-5">
+        <div class="flex flex-wrap items-center justify-between gap-2">
+          <div>
+            <h2 class="text-lg sm:text-xl font-bold text-white">
+              ব্যাকগ্রাউন্ড কাস্টমাইজার (Custom Background)
+            </h2>
+            <p class="text-xs sm:text-sm text-white/70 mt-0.5">
+              ভিডিওর আসল ব্যাকগ্রাউন্ড বাদ দিয়ে নিজের পছন্দমতো গ্রেডিয়েন্ট বা ছবি গ্লাস স্লাইডারের পেছনে বসান
+            </p>
+          </div>
+          <button
+            id="clearCustomBgBtn"
+            type="button"
+            class="px-3 py-1.5 rounded-xl bg-white/10 hover:bg-white/20 border border-white/15 text-xs text-white/85 transition cursor-pointer"
+          >
+            রিসেট ব্যাকগ্রাউন্ড
+          </button>
+        </div>
+
+        <!-- Preset Gradient / Wallpaper Swatches -->
+        <div id="bgPresetGrid" class="grid grid-cols-2 sm:grid-cols-4 gap-3"></div>
+
+        <!-- Glass Blur & Overlay Dim Sliders -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
+          <div class="p-3.5 rounded-2xl bg-white/[0.05] border border-white/10 space-y-2">
+            <div class="flex items-center justify-between text-xs sm:text-sm">
+              <span class="text-white/85">গ্লাস ব্লার (Backdrop Blur)</span>
+              <span id="blurValueLabel" class="font-en font-semibold text-sky-300">22px</span>
+            </div>
+            <input id="blurRangeInput" type="range" min="8" max="36" value="22" class="w-full accent-sky-400 cursor-pointer" />
+          </div>
+
+          <div class="p-3.5 rounded-2xl bg-white/[0.05] border border-white/10 space-y-2">
+            <div class="flex items-center justify-between text-xs sm:text-sm">
+              <span class="text-white/85">গ্লাস স্বচ্ছতা (Glass Opacity)</span>
+              <span id="opacityValueLabel" class="font-en font-semibold text-emerald-300">56%</span>
+            </div>
+            <input id="opacityRangeInput" type="range" min="25" max="85" value="56" class="w-full accent-emerald-400 cursor-pointer" />
+          </div>
+        </div>
+      </div>
+
+    </section>
   </div>
 
+  <script>
+    // Sidebar menu items with English & Bengali labels
+    const MENU_ITEMS = [
+      { id: "home", en: "Home", bn: "হোম", descBn: "মূল ড্যাশবোর্ড ও সাম্প্রতিক কার্যক্রমের সারসংক্ষেপ দেখুন।" },
+      { id: "post", en: "Post", bn: "পোস্ট", descBn: "নতুন পোস্ট তৈরি, ড্রাফট ও পাবলিশড কন্টেন্ট পরিচালনা করুন।" },
+      { id: "messages", en: "Messages", bn: "মেসেজ", descBn: "ক্লায়েন্ট ও টিমের ইনবক্স বার্তাগুলো দ্রুত দেখুন ও উত্তর দিন।" },
+      { id: "friends", en: "Friends", bn: "ফ্রেন্ডস", descBn: "আপনার কানেকশন, পরিচিতি ও নেটওয়ার্ক তালিকা দেখুন।" },
+      { id: "notifications", en: "Notifications", bn: "নোটিফিকেশন", badge: 2, descBn: "নতুন আপডেট, মেনশন ও অ্যাক্টিভিটি অ্যালার্টগুলো পর্যালোচনা করুন।" },
+      { id: "group", en: "Group", bn: "গ্রুপ", descBn: "কমিউনিটি ও প্রজেক্ট গ্রুপগুলোর আলোচনা ও সদস্য দেখুন।" },
+      { id: "pages", en: "Pages", bn: "পেজেস", descBn: "আপনার পরিচালিত ব্র্যান্ড ও বিজনেস পেজগুলো নিয়ন্ত্রণ করুন।" },
+      { id: "games", en: "Games", bn: "গেমস", descBn: "বিরতিতে হালকা গেমস ও ইন্টারেক্টিভ মিনি-অ্যাক্টিভিটি উপভোগ করুন।" },
+      { id: "setting", en: "Setting", bn: "সেটিংস", descBn: "অ্যাকাউন্ট, প্রাইভেসি, থিম ও সিস্টেম পছন্দ পরিবর্তন করুন।" }
+    ];
+
+    // Custom background presets (original video background excluded)
+    const BG_PRESETS = [
+      {
+        id: "emerald-midnight",
+        name: "Emerald Midnight",
+        bnName: "এমারল্ড মিডনাইট",
+        preview: "linear-gradient(135deg, #064e3b 0%, #0f172a 55%, #1e1b4b 100%)",
+        l1: "radial-gradient(circle at 18% 20%, rgba(16, 185, 129, 0.38), transparent 46%)",
+        l2: "radial-gradient(circle at 82% 76%, rgba(56, 189, 248, 0.25), transparent 52%)",
+        base: "linear-gradient(135deg, #061816 0%, #0f172a 55%, #17153b 100%)"
+      },
+      {
+        id: "sunset-amber",
+        name: "Sunset Amber",
+        bnName: "সানসেট অ্যাম্বার",
+        preview: "linear-gradient(135deg, #7c2d12 0%, #451a03 55%, #1e1b4b 100%)",
+        l1: "radial-gradient(circle at 20% 22%, rgba(245, 158, 11, 0.38), transparent 48%)",
+        l2: "radial-gradient(circle at 80% 78%, rgba(244, 63, 94, 0.25), transparent 50%)",
+        base: "linear-gradient(135deg, #1f0d07 0%, #2b130d 55%, #12132b 100%)"
+      },
+      {
+        id: "ocean-aurora",
+        name: "Ocean Aurora",
+        bnName: "ওশান অরোরা",
+        preview: "linear-gradient(135deg, #0369a1 0%, #0f172a 55%, #134e4a 100%)",
+        l1: "radial-gradient(circle at 22% 18%, rgba(14, 165, 233, 0.36), transparent 48%)",
+        l2: "radial-gradient(circle at 80% 75%, rgba(45, 212, 191, 0.26), transparent 50%)",
+        base: "linear-gradient(135deg, #071926 0%, #0c192c 55%, #092424 100%)"
+      },
+      {
+        id: "velvet-plum",
+        name: "Velvet Plum",
+        bnName: "ভেলভেট প্লাম",
+        preview: "linear-gradient(135deg, #581c87 0%, #1e1b4b 55%, #090d16 100%)",
+        l1: "radial-gradient(circle at 20% 24%, rgba(192, 132, 252, 0.32), transparent 46%)",
+        l2: "radial-gradient(circle at 80% 74%, rgba(236, 72, 153, 0.24), transparent 50%)",
+        base: "linear-gradient(135deg, #190929 0%, #14112c 55%, #080b14 100%)"
+      }
+    ];
+
+    function renderMenuIcon(id) {
+      switch (id) {
+        case "home":
+          return `<svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 10.5L12 3l9 7.5V20a1 1 0 01-1 1h-5v-6H9v6H4a1 1 0 01-1-1v-9.5z"/></svg>`;
+        case "post":
+          return `<svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>`;
+        case "messages":
+          return `<svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>`;
+        case "friends":
+          return `<svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/></svg>`;
+        case "notifications":
+          return `<svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/></svg>`;
+        case "group":
+          return `<svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/></svg>`;
+        case "pages":
+          return `<svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2"/></svg>`;
+        case "games":
+          return `<svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 5v2m0 4v2m0 4v2M5 5a2 2 0 00-2 2v3a2 2 0 110 4v3a2 2 0 002 2h14a2 2 0 002-2v-3a2 2 0 110-4V7a2 2 0 00-2-2H5z"/></svg>`;
+        case "setting":
+        default:
+          return `<svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg>`;
+      }
+    }
+
+    let activeMenuId = "home";
+    let isCollapsed = false;
+
+    const sidebarNavList = document.getElementById("sidebarNavList");
+    const glassSidebar = document.getElementById("glassSidebar");
+    const collapseChevron = document.getElementById("collapseChevron");
+    const brandExpanded = document.getElementById("brandExpanded");
+    const brandCollapsed = document.getElementById("brandCollapsed");
+    const activeViewTitle = document.getElementById("activeViewTitle");
+    const activeViewDesc = document.getElementById("activeViewDesc");
+    const statusToast = document.getElementById("statusToast");
+    const sidebarModeLabel = document.getElementById("sidebarModeLabel");
+    const activeBgLabel = document.getElementById("activeBgLabel");
+    const bgPresetGrid = document.getElementById("bgPresetGrid");
+
+    function renderSidebarItems() {
+      sidebarNavList.innerHTML = "";
+      MENU_ITEMS.forEach((item) => {
+        const isActive = item.id === activeMenuId;
+        const btn = document.createElement("button");
+        btn.type = "button";
+        btn.title = `${item.en} (${item.bn})`;
+        btn.className = `nav-pill w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-left cursor-pointer ${
+          isActive ? "active text-white" : "text-white/75 hover:text-white"
+        }`;
+        if (isCollapsed) {
+          btn.classList.add("justify-center", "px-2");
+        }
+
+        const badgeHtml = item.badge
+          ? `<span class="nav-badge ${
+              isCollapsed ? "hidden" : "ml-auto"
+            } w-5 h-5 rounded-full bg-white text-slate-950 font-en font-bold text-[11px] flex items-center justify-center shadow">${item.badge}</span>`
+          : "";
+
+        const bnHintHtml = !isCollapsed && !item.badge
+          ? `<span class="nav-bn-tag ml-auto text-[11px] text-white/50">${item.bn}</span>`
+          : "";
+
+        btn.innerHTML = `
+          ${renderMenuIcon(item.id)}
+          <span class="nav-label ${isCollapsed ? "hidden" : ""} font-en text-sm font-medium truncate">${item.en}</span>
+          ${bnHintHtml}
+          ${badgeHtml}
+        `;
+
+        btn.addEventListener("click", () => {
+          activeMenuId = item.id;
+          renderSidebarItems();
+          activeViewTitle.innerHTML = `
+            <span class="font-en">${item.en}</span>
+            <span class="text-lg font-normal text-white/70">(${item.bn})</span>
+          `;
+          activeViewDesc.innerHTML = `আপনি এখন <strong>${item.en} (${item.bn})</strong> সেকশনে আছেন। ${item.descBn}`;
+          statusToast.textContent = `সিলেক্ট করা হয়েছে: ${item.en} (${item.bn})`;
+        });
+
+        sidebarNavList.appendChild(btn);
+      });
+    }
+
+    function applyCollapseState(collapsed) {
+      isCollapsed = collapsed;
+      if (isCollapsed) {
+        glassSidebar.style.width = "84px";
+        collapseChevron.style.transform = "rotate(180deg)";
+        brandExpanded.classList.add("hidden");
+        brandCollapsed.classList.remove("hidden");
+        brandCollapsed.classList.add("flex");
+        document.querySelectorAll(".user-meta, .menu-section-label, .nav-bn-tag, .nav-badge, #logoutBtn .nav-label").forEach((el) => {
+          el.classList.add("hidden");
+        });
+        document.getElementById("logoutBtn").classList.add("justify-center", "px-2");
+        sidebarModeLabel.textContent = "Collapsed (CXR)";
+        statusToast.textContent = "স্লাইডার Compact (CXR) মোডে আছে";
+      } else {
+        glassSidebar.style.width = "276px";
+        collapseChevron.style.transform = "rotate(0deg)";
+        brandExpanded.classList.remove("hidden");
+        brandCollapsed.classList.add("hidden");
+        brandCollapsed.classList.remove("flex");
+        document.querySelectorAll(".user-meta, .menu-section-label, .nav-bn-tag, .nav-badge, #logoutBtn .nav-label").forEach((el) => {
+          el.classList.remove("hidden");
+        });
+        document.getElementById("logoutBtn").classList.remove("justify-center", "px-2");
+        sidebarModeLabel.textContent = "Expanded (Full)";
+        statusToast.textContent = "স্লাইডার Full (CODEXR) মোডে আছে";
+      }
+      renderSidebarItems();
+    }
+
+    // Background Preset Cards
+    function applyPreset(preset) {
+      document.documentElement.style.setProperty("--bg-custom-image", "none");
+      document.documentElement.style.setProperty("--bg-layer-1", preset.l1);
+      document.documentElement.style.setProperty("--bg-layer-2", preset.l2);
+      document.documentElement.style.setProperty("--bg-base", preset.base);
+      activeBgLabel.textContent = `${preset.bnName} (${preset.name})`;
+      statusToast.textContent = `ব্যাকগ্রাউন্ড পরিবর্তন হয়েছে: ${preset.bnName}`;
+    }
+
+    BG_PRESETS.forEach((preset, idx) => {
+      const card = document.createElement("button");
+      card.type = "button";
+      card.className = "group rounded-2xl overflow-hidden border border-white/15 hover:border-white/40 transition text-left cursor-pointer bg-white/5";
+      card.innerHTML = `
+        <div class="h-14 w-full" style="background: ${preset.preview};"></div>
+        <div class="p-2.5">
+          <div class="text-xs font-bold text-white truncate">${preset.bnName}</div>
+          <div class="font-en text-[11px] text-white/60 truncate">${preset.name}</div>
+        </div>
+      `;
+      card.addEventListener("click", () => applyPreset(preset));
+      bgPresetGrid.appendChild(card);
+      if (idx === 0) applyPreset(preset);
+    });
+
+    // Custom Image Upload
+    document.getElementById("bgUploadInput").addEventListener("change", (e) => {
+      const file = e.target.files && e.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = (ev) => {
+        const dataUrl = ev.target.result;
+        document.documentElement.style.setProperty("--bg-custom-image", `url("${dataUrl}")`);
+        activeBgLabel.textContent = `কাস্টম ছবি: ${file.name}`;
+        statusToast.textContent = `কাস্টম ব্যাকগ্রাউন্ড ছবি যুক্ত হয়েছে`;
+      };
+      reader.readAsDataURL(file);
+    });
+
+    // Reset Background
+    document.getElementById("clearCustomBgBtn").addEventListener("click", () => {
+      applyPreset(BG_PRESETS[0]);
+      document.getElementById("bgUploadInput").value = "";
+    });
+
+    // Blur & Glass Opacity Controls
+    const blurRangeInput = document.getElementById("blurRangeInput");
+    const blurValueLabel = document.getElementById("blurValueLabel");
+    const opacityRangeInput = document.getElementById("opacityRangeInput");
+    const opacityValueLabel = document.getElementById("opacityValueLabel");
+
+    blurRangeInput.addEventListener("input", (e) => {
+      const val = e.target.value;
+      blurValueLabel.textContent = `${val}px`;
+      glassSidebar.style.backdropFilter = `blur(${val}px) saturate(155%)`;
+      glassSidebar.style.webkitBackdropFilter = `blur(${val}px) saturate(155%)`;
+    });
+
+    opacityRangeInput.addEventListener("input", (e) => {
+      const pct = Number(e.target.value);
+      opacityValueLabel.textContent = `${pct}%`;
+      const alpha = (pct / 100).toFixed(2);
+      document.documentElement.style.setProperty("--glass-bg", `rgba(20, 22, 34, ${alpha})`);
+    });
+
+    // Toggle Buttons
+    document.getElementById("sidebarCollapseBtn").addEventListener("click", () => {
+      applyCollapseState(!isCollapsed);
+    });
+
+    document.getElementById("quickToggleBtn").addEventListener("click", () => {
+      applyCollapseState(!isCollapsed);
+    });
+
+    document.getElementById("logoutBtn").addEventListener("click", () => {
+      statusToast.textContent = "Log Out (লগ আউট) বাটনে ক্লিক করা হয়েছে";
+      activeViewTitle.innerHTML = `<span class="font-en">Log Out</span> <span class="text-lg font-normal text-white/70">(লগ আউট)</span>`;
+      activeViewDesc.innerHTML = `সেশন লগ আউট অ্যাকশন ট্রিগার হয়েছে। পুনরায় কাজ শুরু করতে যেকোনো মেনু আইটেমে ক্লিক করুন।`;
+    });
+
+    // Initial Render
+    renderSidebarItems();
+  </script>
 </body>
 </html>
